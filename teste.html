@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<div style="text-align:center">
+  <h1>Video Player</h1>
+  <div id="ex0">
+    <h2>Exemplos:</h2>
+    <button onclick="changeDivs(1)" id="btn1">ex1</button>
+    <button onclick="changeDivs(2)" id="btn2">ex2</button>
+    <button onclick="changeDivs(3)" id="btn3">ex3</button>
+  </div>
+
+  <div  id="ex1" style="display: none;">
+    <h2>Exemplo 1</h2>
+    <video id="video1" width="420" autoplay>
+      <source src="video.mp4" type="video/mp4">
+      Your browser does not support HTML video.
+    </video>
+    <br>
+    <progress id="progressBar" value="0" max="100" style="width: 420px;"></progress>
+    <br>
+    <button onclick="playPause()">Play/Pause</button>
+    <button onclick="resetVideo()">Stop</button>
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1" oninput="setVolume()">
+    <button onclick="toggleMute()">Mute/Unmute</button>
+    <br>
+    <button onclick="makeSmall()">Small</button>
+    <button onclick="makeBig()">Big</button>
+    <button onclick="makeNormal()">Normal</button>
+    <button onclick="changeDivs(0)" id="btn1">home</button>
+  </div>
+
+  <div id="ex2" style="display: none;">
+    <h2>Exemplo 2</h2>
+    <video id="video2" width="420" autoplay>
+      <source src="video.mp4" type="video/mp4" autoplay>
+      Your browser does not support HTML video.
+    </video>
+    <br>
+    <progress id="progressBar2" value="0" max="5" style="width: 420px;"></progress>
+    <br>
+    <button onclick="changeDivs(0)" id="btn2">home</button>
+  </div>
+
+  <div id="ex3" style="display: none;">
+    <h2>Exemplo 3</h2>
+    <video id="video3" width="420" autoplay>
+      <source src="video.mp4" type="video/mp4">
+      Your browser does not support HTML video.
+    </video>
+    <br>
+    <progress id="progressBar3" value="0" max="100" style="width: 420px;"></progress>
+    <br>
+    <button onclick="toggleMute3()">Mute/Unmute</button>
+    <br>
+    <button onclick="changeDivs(0)" id="btn3">home</button>
+  </div>
+
+  <div id="ex4" style="display: none;">
+    <h2>Exemplo 4</h2>
+    <video id="video4" width="420">
+      <source src="video.mp4" type="video/mp4">
+      Your browser does not support HTML video.
+    </video>
+    <br>
+    <progress id="progressBar4" value="0" max="100" style="width: 420px;"></progress>
+    <br>
+    <button onclick="playPause()">Play/Pause</button>
+    <button onclick="resetVideo()">Stop</button>
+    <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1" oninput="setVolume()">
+    <button onclick="toggleMute()">Mute/Unmute</button>
+    <br>
+    <button onclick="makeSmall()">Small</button>
+    <button onclick="makeBig()">Big</button>
+    <button onclick="makeNormal()">Normal</button>
+    <button onclick="changeDivs(0)" id="btn4">home</button>
+  </div>
+</div>
+
+<script>
+  var myVideo = [];
+  myVideo.push(1);
+myVideo.push(document.getElementById("video1"));
+myVideo.push(document.getElementById("video2"));
+myVideo.push(document.getElementById("video3"));
+var volumeSlider = document.getElementById("volumeSlider");
+var progressBar = document.getElementById("progressBar");
+var progressBar2 = document.getElementById("progressBar2");
+var progressBar3 = document.getElementById("progressBar3");
+function playPause() {
+
+  if (myVideo[1].paused) {
+    myVideo[1].play().then(() => {}).catch(error => {
+      console.log("Erro ao iniciar o vídeo: " + error.message);
+    });
+  } else {
+    myVideo[1].pause();
+  }
+}
+
+function makeBig() {
+  myVideo[1].width = 560;
+}
+
+function makeSmall() {
+  myVideo[1].width = 320;
+}
+
+function makeNormal() {
+  myVideo[1].width = 420;
+}
+
+function toggleMute() {
+  myVideo[1].muted = !myVideo[1].muted;
+  updateVolumeSlider();
+}
+
+function setVolume() {
+  myVideo[1].volume = volumeSlider.value;
+  myVideo[1].muted = false;
+}
+
+function updateVolumeSlider() {
+  volumeSlider.value = myVideo[1].muted ? 0 : myVideo[1].volume;
+}
+
+myVideo[1].addEventListener("timeupdate", updateProgressBar);
+
+function updateProgressBar() {
+  var currentTime = myVideo[1].currentTime;
+  var duration = myVideo[1].duration;
+  var percentage = (currentTime / duration) * 100;
+  progressBar.value = percentage;
+  updateVolumeSlider();
+}
+
+function resetVideo() {
+  myVideo[1].currentTime = 0;
+  myVideo[1].pause();
+}
+
+
+//video2
+function play2() {
+  if (myVideo[2].paused) {
+    myVideo[2].play().then(() => {}).catch(error => {
+      console.log("Erro ao iniciar o vídeo: " + error.message);
+    });
+  } else {
+    myVideo[2].pause();
+  }
+}
+
+myVideo[2].addEventListener("timeupdate", updateProgressBar2);
+function updateProgressBar2() {
+  var currentTime = myVideo[2].currentTime;
+  var duration = myVideo[2].duration;
+  var percentage = (currentTime / duration) * 100;
+  progressBar2.value = percentage;
+  if(percentage>5){
+    myVideo[2].currentTime = 0;
+    myVideo[2].pause();
+  }
+}
+//video3
+function play3() {
+  if (myVideo[3].paused) {
+    myVideo[3].play().then(() => {}).catch(error => {
+      console.log("Erro ao iniciar o vídeo: " + error.message);
+    });
+  } else {
+    myVideo[3].pause();
+  }
+}
+
+myVideo[3].addEventListener("timeupdate", updateProgressBar3);
+function updateProgressBar3() {
+  var currentTime = myVideo[3].currentTime;
+  var duration = myVideo[3].duration;
+  var percentage = (currentTime / duration) * 100;
+  progressBar3.value = percentage;
+}
+function toggleMute3() {
+  myVideo[3].muted = !myVideo3.muted;
+}
+
+
+
+function changeDivs(n) {
+  hideAllDivs();
+  if(n>0){
+    myVideo[n].play()
+  }
+  document.getElementById("ex"+n).style.display = "block";
+
+}
+
+function hideAllDivs() {
+  document.getElementById("ex0").style.display = "none";
+  document.getElementById("ex1").style.display = "none";
+  document.getElementById("ex2").style.display = "none";
+  document.getElementById("ex3").style.display = "none";
+
+  myVideo[1].currentTime = 0;
+  myVideo[1].pause();
+  myVideo[2].currentTime = 0;
+  myVideo[2].pause();
+  myVideo[3].currentTime = 0;
+  myVideo[3].pause();
+
+}
+
+</script>
+</body>
+</html>
